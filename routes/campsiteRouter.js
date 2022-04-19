@@ -197,7 +197,11 @@ campsiteRouter
   .put(authenticate.verifyUser, (req, res, next) => {
     Campsite.findById(req.params.campsiteId)
       .then((campsite) => {
-        if (req.body.author.equals(req.user._id)) {
+        if (
+          campsite.comments
+            .id(req.params.commentId)
+            .author._id.equals(req.user._id)
+        ) {
           if (campsite && campsite.comments.id(req.params.commentId)) {
             if (req.body.rating) {
               campsite.comments.id(req.params.commentId).rating =
